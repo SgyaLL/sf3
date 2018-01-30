@@ -10,5 +10,15 @@
 
         <service id="repositories.ticket" alias="repositories.ticket.dbal" />
 
+        <service id="repositories.member.dbal" class="Tiquette\Infrastructure\Repositories\DbalMemberRepository">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+        </service>
+
+        <service id="repositories.member" alias="repositories.member.dbal" />
+
+        <service id="app.member_password_encoder" class="Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder">
+            <argument>13</argument>
+        </service>
+
     </services>
 </container>
