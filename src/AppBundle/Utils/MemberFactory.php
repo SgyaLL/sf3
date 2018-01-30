@@ -22,7 +22,7 @@ class MemberFactory
 
     public function fromSignUp(MemberSignUp $signUp): Member
     {
-        $salt = base64_encode(random_bytes(256));
+        $salt = base64_encode(random_bytes(128));
         $rawEncodedPassword = $this->passwordEncoder->encodePassword(
             $signUp->plainTextPassword,
             $salt
