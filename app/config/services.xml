@@ -24,5 +24,7 @@
             <argument type="service" id="app.member_password_encoder" />
         </service>
 
+        <service id="ticket_factory" class="AppBundle\Utils\TicketFactory" />
+
     </services>
 </container>

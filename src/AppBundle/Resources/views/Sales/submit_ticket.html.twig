@@ -1,30 +1,7 @@
 {% extends "base.html.twig" %}
 
-{% block title %}AppBundle:Sales:submitTicket{% endblock %}
+{% block title %}Submit ticket{% endblock %}
 
 {% block body %}
-
-    {% if violations %}
-        <ul class="form-errors">
-            {% for violation in violations %}
-                <li class="form-error">{{ violation.propertyPath }}: {{ violation.message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <form method="post" action="{{ path('submit_ticket') }}">
-        <div class="form-group">
-            <label>Event name</label>
-            <input type="text" class="form-control" placeholder="Event name" name="event_name">
-        </div>
-        <div class="form-group">
-            <label>Date</label>
-            <input type="datetime-local" class="form-control" placeholder="Event date" name="event_date">
-        </div>
-        <div class="form-group">
-            <label>Event description</label>
-            <textarea class="form-control" placeholder="Event description" name="event_description"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    {{ form(ticketSubmissionForm) }}
 {% endblock %}
