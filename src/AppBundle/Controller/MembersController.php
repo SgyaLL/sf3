@@ -3,50 +3,38 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Forms\MemberSignUp;
+use AppBundle\Forms\Types\MemberSignUpType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
-use Tiquette\Domain\Email;
-use Tiquette\Domain\EncodedPassword;
-use Tiquette\Domain\Member;
 
 class MembersController extends Controller
 {
     public function signUpAction(Request $request): Response
     {
         $memberSignUp = new MemberSignUp();
-        $memberSignUp->nickname = $request->request->get('member_nickname');
-        $memberSignUp->email = $request->request->get('member_email');
-        $memberSignUp->password = $request->request->get('member_password');
-        $memberSignUp->passwordConfirmation = $request->request->get('member_password_confirmation');
+
+        $memberSignUpForm = $this->createForm(MemberSignUpType::class, $memberSignUp);
 
         if ($request->isMethod('POST')) {
-            $violations = $this->get('validator')->validate($memberSignUp);
-            if (\count($violations) > 0) {
 
-                /** @var ConstraintViolation[] $violations */
-                return $this->render('@App/Members/member_sign_up.html.twig', ['violations' => $violations]);
+            $memberSignUpForm->handleRequest($request);
+            if ($memberSignUpForm->isSubmitted() && $memberSignUpForm->isValid()) {
+
+                $member = $this->get('member_factory')->fromSignUp($memberSignUp);
+
+                $this->get('repositories.member')->save($member);
+
+                return $this->redirectToRoute('member_sign_up_successful');
             }
-
-            $salt = sha1(sha1(uniqid()));
-            $rawEncodedPassword = $this->get('app.member_password_encoder')->encodePassword(
-                $memberSignUp->password,
-                $salt
-            );
-
-            $member = Member::signUp(
-                new Email($memberSignUp->email),
-                $memberSignUp->nickname,
-                new EncodedPassword($rawEncodedPassword, $salt)
-            );
-
-            $this->get('repositories.member')->save($member);
-
-            return $this->redirectToRoute('member_sign_up_successful');
         }
 
-        return $this->render('@App/Members/member_sign_up.html.twig', ['violations' => []]);
+        return $this->render('@App/Members/member_sign_up.html.twig', ['signUpForm' => $memberSignUpForm->createView()]);
     }
 
     public function signUpSuccessfulAction(Request $request): Response

@@ -5,12 +5,16 @@
 
 namespace Tiquette\Domain;
 
+use Tiquette\Utils\Ensure;
+
 class Email
 {
     private $email;
 
     public function __construct(string $email)
     {
+        Ensure::email($email);
+
         $this->email = $email;
     }
 

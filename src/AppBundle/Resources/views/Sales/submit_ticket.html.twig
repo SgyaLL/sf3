@@ -6,9 +6,9 @@
 
     {% if violations %}
         <ul class="form-errors">
-        {% for violation in violations %}
-            <li class="form-error">{{ violation.propertyPath  }}: {{ violation.message }}</li>
-        {% endfor %}
+            {% for violation in violations %}
+                <li class="form-error">{{ violation.propertyPath }}: {{ violation.message }}</li>
+            {% endfor %}
         </ul>
     {% endif %}
 

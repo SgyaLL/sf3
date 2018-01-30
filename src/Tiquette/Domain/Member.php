@@ -5,6 +5,8 @@
 
 namespace Tiquette\Domain;
 
+use Tiquette\Utils\Ensure;
+
 class Member
 {
     private $email;
@@ -33,6 +35,9 @@ class Member
 
     private function __construct(Email $email, string $nickname, EncodedPassword $encodedPassword)
     {
+        Ensure::string($nickname);
+        Ensure::minLength($nickname, 1);
+
         $this->email = $email;
         $this->nickname = $nickname;
         $this->encodedPassword = $encodedPassword;
