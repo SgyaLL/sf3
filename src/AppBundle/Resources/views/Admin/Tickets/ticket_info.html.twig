@@ -9,9 +9,10 @@
         <li> description : {{ tickets.eventDescription }}</li>
 
 
-        <form action="{{ path('buy_ticket') }}" method="post">
+        <form action="#" method="post">
 
-
+                <label for="proposition">Proposition:</label>
+                <input type="text" id="proposition" name="_proposition" value="{{ proposition }}" />
                 <button type="submit">Sign in</button>
         </form>
 

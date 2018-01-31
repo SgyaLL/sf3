@@ -32,6 +32,11 @@ admin.buy_tickets:
   path: /admin/tickets/{name}
   defaults: { _controller: AppBundle:Admin\Tickets:listTickets }
 
+admin.buy_ticket:
+  path: /admin/tickets/{name}
+  defaults: { _controller: AppBundle:Admin\Tickets:buyTicket }
+
+
 member_info:
   path: /members/info
   methods: ['GET', 'POST']
