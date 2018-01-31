@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Ticket Info{% endblock %}
+
+{% block body %}
+
+        <li> nom : {{ tickets.eventName }}</li>
+
+        <li> description : {{ tickets.eventDescription }}</li>
+
+
+        <form action="{{ path('buy_ticket') }}" method="post">
+
+
+                <button type="submit">Sign in</button>
+        </form>
+
+
+{% endblock %}

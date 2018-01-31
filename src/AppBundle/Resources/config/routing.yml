@@ -27,3 +27,18 @@ member_sign_out:
 admin.list_all_tickets:
   path: /admin/tickets/all
   defaults: { _controller: AppBundle:Admin\Tickets:listAllTickets }
+
+admin.buy_tickets:
+  path: /admin/tickets/{name}
+  defaults: { _controller: AppBundle:Admin\Tickets:listTickets }
+
+member_info:
+  path: /members/info
+  methods: ['GET', 'POST']
+  defaults: { _controller: AppBundle:Members:showUserInfo }
+
+member_info:
+  path: /ticket/{name}
+  methods: ['GET', 'POST']
+  defaults: { _controller: AppBundle:Members:showUserInfo }
+
