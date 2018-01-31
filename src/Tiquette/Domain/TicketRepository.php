@@ -8,4 +8,7 @@ namespace Tiquette\Domain;
 interface TicketRepository
 {
     public function save(Ticket $ticket): void;
+
+    /** @return Ticket[] */
+    public function findAll(): array;
 }

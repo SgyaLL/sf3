@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block body %}
+    {% for ticket in tickets %}
+        <li>{{ ticket.eventName }}</li>
+    {% endfor %}
+{% endblock %}

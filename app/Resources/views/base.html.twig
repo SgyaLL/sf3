@@ -13,16 +13,24 @@
 <header>
     <div class="app-masthead">
         <div class="container">
-            <nav class="nav">
-                <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
-                <a class="nav-link" href="{{ path('submit_ticket') }}">Vendre un ticket</a>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link" href="{{ path('homepage') }}">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('submit_ticket') }}">Vendre un ticket</a></li>
                 {%  if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="nav-link" href="{{ path('member_sign_in') }}">Se connecter</a>
-                <a class="nav-link" href="{{ path('member_sign_up') }}">S'inscrire</a>
+                    <li><a class="nav-link" href="{{ path('member_sign_in') }}">Se connecter</a></li>
+                    <li><a class="nav-link" href="{{ path('member_sign_up') }}">S'inscrire</a></li>
                 {% else %}
-                    <a class="nav-link" href="{{ path('member_sign_out') }}">Déconnexion</a>
+                    <li><a class="nav-link" href="{{ path('member_sign_out') }}">Déconnexion</a></li>
                 {% endif %}
-            </nav>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('admin.list_all_tickets') }}">Voir tous les tickets proposés</a>
+                    </div>
+                </li>
+                 {% endif %}
+            </ul>
         </div>
     </div>
 

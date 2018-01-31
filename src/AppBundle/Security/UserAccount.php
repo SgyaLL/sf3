@@ -17,27 +17,27 @@ class UserAccount implements UserInterface
         return new self($member);
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->member->getRoles();
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->member->getEncodedPassword()->getEncodedPassword();
     }
 
-    public function getSalt()
+    public function getSalt(): string
     {
         return $this->member->getEncodedPassword()->getSalt();
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return (string) $this->member->getEmail();
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // nothing to do
     }

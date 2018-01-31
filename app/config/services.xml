@@ -31,5 +31,10 @@
             <argument type="service" id="repositories.member" />
         </service>
 
+        <service id="member_user_account_authenticator" class="AppBundle\Security\MemberUserAccountAuthenticator">
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="session" />
+        </service>
+
     </services>
 </container>

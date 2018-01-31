@@ -23,3 +23,7 @@ member_sign_in:
 member_sign_out:
     path:     /members/signout
     defaults: { _controller: AppBundle:Members:signOut }
+
+admin.list_all_tickets:
+  path: /admin/tickets/all
+  defaults: { _controller: AppBundle:Admin\Tickets:listAllTickets }

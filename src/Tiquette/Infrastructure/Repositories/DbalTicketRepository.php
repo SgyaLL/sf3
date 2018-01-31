@@ -30,4 +30,28 @@ class DbalTicketRepository implements TicketRepository
 
         $this->connection->insert('tickets', $data);
     }
+
+    public function findAll(): array
+    {
+        $query =<<<SQL
+SELECT * FROM tickets;
+SQL;
+
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+
+        $tickets = [];
+
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+
+            $tickets[] = $this->hydrateFromRow($row);
+        }
+
+        return $tickets;
+    }
+
+    private function hydrateFromRow(array $row): Ticket
+    {
+        return Ticket::fromArray($row);
+    }
 }

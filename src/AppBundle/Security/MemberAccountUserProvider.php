@@ -45,6 +45,6 @@ class MemberAccountUserProvider implements UserProviderInterface
 
     public function supportsClass($class): bool
     {
-        return $class === User::class;
+        return $class === UserAccount::class;
     }
 }

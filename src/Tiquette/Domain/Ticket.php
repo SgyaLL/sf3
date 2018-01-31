@@ -45,4 +45,18 @@ class Ticket
         $this->eventDescription = $eventDescription;
         $this->boughtAtPrice = $boughtAtPrice;
     }
+
+    /**
+     * This method should be used only to hydrate object from a persistent storage
+     * and never to create / sign up a Member.
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            $data['event_name'],
+            \DateTimeImmutable::createFromFormat('Y-m-d H:i:00', $data['event_date']),
+            $data['event_description'],
+            0
+        );
+    }
 }

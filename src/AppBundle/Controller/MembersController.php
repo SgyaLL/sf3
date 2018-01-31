@@ -5,15 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Forms\MemberSignUp;
 use AppBundle\Forms\Types\MemberSignUpType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Validator\ConstraintViolation;
-use Tiquette\Domain\Email;
 
 class MembersController extends Controller
 {
@@ -32,6 +26,8 @@ class MembersController extends Controller
 
                 $this->get('repositories.member')->save($member);
 
+                $this->get('member_user_account_authenticator')->authenticate($member);
+
                 return $this->redirectToRoute('member_sign_up_successful');
             }
         }
@@ -41,7 +37,7 @@ class MembersController extends Controller
 
     public function signUpSuccessfulAction(Request $request): Response
     {
-        return new Response('Sign up successful');
+        return $this->render('@App/Members/member_sign_up_successful.html.twig');
     }
 
     public function signInAction(Request $request, AuthenticationUtils $authUtils)
