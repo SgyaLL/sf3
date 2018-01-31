@@ -36,5 +36,19 @@
             <argument type="service" id="session" />
         </service>
 
+        <service id="role_promoter" class="AppBundle\Security\RolePromoter">
+            <argument type="service" id="repositories.member" />
+        </service>
+
+        <service id="commands.promote_member_to_admin" class="AppBundle\Command\PromoteAdminCommand">
+            <argument type="service" id="role_promoter" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="commands.demote_member_to_admin" class="AppBundle\Command\DemoteAdminCommand">
+            <argument type="service" id="role_promoter" />
+            <tag name="console.command" />
+        </service>
+
     </services>
 </container>

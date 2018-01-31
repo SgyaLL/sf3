@@ -22,14 +22,28 @@ class DbalMemberRepository implements MemberRepository
 
     public function save(Member $member): void
     {
-        $data = [
+        $query = <<<SQL
+INSERT INTO members
+    (uuid, email, nickname, encoded_password, password_salt, roles)
+VALUES
+    (:uuid, :email, :nickname, :encoded_password, :password_salt, :roles)
+  ON DUPLICATE KEY
+    UPDATE
+      encoded_password = :encoded_password,
+      password_salt    = :password_salt,
+      roles            = :roles
+;
+SQL;
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute([
+            'uuid' => (string) $member->getId(),
             'email' => (string) $member->getEmail(),
             'nickname' => $member->getNickname(),
             'encoded_password' => $member->getEncodedPassword()->getEncodedPassword(),
             'password_salt' => $member->getEncodedPassword()->getSalt(),
-        ];
-
-        $this->connection->insert('members', $data);
+            'roles' => implode(',', $member->getRoles()),
+        ]);
     }
 
     public function findByEmail(Email $email): Member
@@ -42,12 +56,12 @@ SQL;
         $statement->execute(['email' => $email]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        if (null !== $row) {
+        if (!$row) {
 
-            return $this->hydrateFromRow($row);
+            throw MemberNotFound::unknownEmail($email);
         }
 
-        throw MemberNotFound::unknownEmail($email);
+        return $this->hydrateFromRow($row);
     }
 
     private function hydrateFromRow(array $row): Member

@@ -9,6 +9,7 @@ use Tiquette\Utils\Ensure;
 
 class Member
 {
+    private $id;
     private $email;
     private $nickname;
     private $encodedPassword;
@@ -16,7 +17,7 @@ class Member
 
     public static function signUp(Email $email, string $nickname, EncodedPassword $encodedPassword): self
     {
-        return new self($email, $nickname, $encodedPassword, ['ROLE_USER']);
+        return new self(MemberId::generate(), $email, $nickname, $encodedPassword, ['ROLE_USER']);
     }
 
     public function promoteAdmin(): void
@@ -29,6 +30,11 @@ class Member
         if (false !== ($roleIndex = array_search('ROLE_ADMIN', $this->roles, false))) {
             unset($this->roles[$roleIndex]);
         }
+    }
+
+    public function getId(): MemberId
+    {
+        return $this->id;
     }
 
     public function getEmail(): Email
@@ -51,11 +57,12 @@ class Member
         return $this->roles;
     }
 
-    private function __construct(Email $email, string $nickname, EncodedPassword $encodedPassword, array $roles)
+    private function __construct(MemberId $memberId, Email $email, string $nickname, EncodedPassword $encodedPassword, array $roles)
     {
         Ensure::string($nickname);
         Ensure::minLength($nickname, 1);
 
+        $this->id = $memberId;
         $this->email = $email;
         $this->nickname = $nickname;
         $this->encodedPassword = $encodedPassword;
@@ -69,6 +76,7 @@ class Member
     public static function fromArray(array $data): self
     {
         return new self(
+            MemberId::fromString($data['uuid']),
             new Email($data['email']),
             $data['nickname'],
             new EncodedPassword($data['encoded_password'], $data['password_salt']),
