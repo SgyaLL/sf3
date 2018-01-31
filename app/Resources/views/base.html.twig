@@ -14,7 +14,14 @@
     <div class="app-masthead">
         <div class="container">
             <nav class="nav">
-                <a class="nav-link" href="/">Accueil</a>
+                <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
+                <a class="nav-link" href="{{ path('submit_ticket') }}">Vendre un ticket</a>
+                {%  if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="nav-link" href="{{ path('member_sign_in') }}">Se connecter</a>
+                <a class="nav-link" href="{{ path('member_sign_up') }}">S'inscrire</a>
+                {% else %}
+                    <a class="nav-link" href="{{ path('member_sign_out') }}">Déconnexion</a>
+                {% endif %}
             </nav>
         </div>
     </div>

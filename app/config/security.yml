@@ -4,8 +4,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        members:
+          id: app.security.member_account_user_provider
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+        AppBundle\Security\UserAccount: plaintext
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,10 +19,12 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
+            form_login:
+                login_path: member_sign_in
+                check_path: member_sign_in
+            logout:
+                path: member_sign_out
+                target: homepage
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    access_control:
+        - { path: ^/tickets/submit, roles: ROLE_USER }

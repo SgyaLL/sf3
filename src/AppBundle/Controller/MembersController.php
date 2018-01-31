@@ -11,7 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\ConstraintViolation;
+use Tiquette\Domain\Email;
 
 class MembersController extends Controller
 {
@@ -41,4 +43,20 @@ class MembersController extends Controller
     {
         return new Response('Sign up successful');
     }
+
+    public function signInAction(Request $request, AuthenticationUtils $authUtils)
+    {
+        // get the login error if there is one
+        $error = $authUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authUtils->getLastUsername();
+
+        return $this->render('@App/Members/member_sign_in.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
+    }
+
+    public function signOutAction(Request $request) {}
 }

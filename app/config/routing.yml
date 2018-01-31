@@ -4,5 +4,5 @@ homepage:
   defaults:
     _controller: AppBundle:Default:index
 
-sales:
+app_bundle:
   resource: '@AppBundle/Resources/config/routing.yml'

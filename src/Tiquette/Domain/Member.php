@@ -42,4 +42,18 @@ class Member
         $this->nickname = $nickname;
         $this->encodedPassword = $encodedPassword;
     }
+
+
+    /**
+     * This method should be used only to hydrate object from a persistent storage
+     * and never to create / sign up a Member.
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            new Email($data['email']),
+            $data['nickname'],
+            new EncodedPassword($data['encoded_password'], $data['password_salt'])
+        );
+    }
 }
